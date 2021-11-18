@@ -1,9 +1,11 @@
 package com.example.week08;
 
 
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentTransaction;
@@ -33,11 +35,12 @@ public class MainActivity extends FragmentActivity implements com.example.week08
             db.execSQL(sql1);
             db.execSQL(sql2);
             db.execSQL("insert into Lop(MaLop, TenLop) values('19_3', 'Mobile')");
-            db.execSQL("insert into HocSinh(MaHocSinh, MaLop, TenHocSinh, Diem) values('19120070', '19_3', 'Tran Nhan Hao', 10)");
-            db.execSQL("insert into HocSinh(MaHocSinh, MaLop, TenHocSinh, Diem) values('19120129', '19_3', 'Huynh Minh Thang', 10)");
-            db.execSQL("insert into HocSinh(MaHocSinh, MaLop, TenHocSinh, Diem) values('19120141', '19_3', 'Nguyen Quoc Toan', 10)");
-            db.execSQL("insert into HocSinh(MaHocSinh, MaLop, TenHocSinh, Diem) values('19120168', '19_3', 'Le Viet Bach', 10)");
-            db.execSQL("insert into HocSinh(MaHocSinh, MaLop, TenHocSinh, Diem) values('19120722', '19_3', 'Van The Vinh', 10)");
+            db.execSQL("insert into HocSinh(MaHocSinh, MaLop, TenHocSinh, Diem) values('19120070', '19_3', 'Trần Nhật Hào', 10)");
+            db.execSQL("insert into HocSinh(MaHocSinh, MaLop, TenHocSinh, Diem) values('19120129', '19_3', 'Huỳnh Minh Thắng', 10)");
+            db.execSQL("insert into HocSinh(MaHocSinh, MaLop, TenHocSinh, Diem) values('19120141', '19_3', 'Nguyễn Quốc Toàn', 10)");
+            db.execSQL("insert into HocSinh(MaHocSinh, MaLop, TenHocSinh, Diem) values('19120168', '19_3', 'Lê Viết Bách', 10)");
+            db.execSQL("insert into HocSinh(MaHocSinh, MaLop, TenHocSinh, Diem) values('19120722', '19_3', 'Văn Thế Vinh', 10)");
+
 
             db.setTransactionSuccessful(); //commit your changes
         }
@@ -46,13 +49,16 @@ public class MainActivity extends FragmentActivity implements com.example.week08
         }
         finally { db.endTransaction(); }
 
+        String sql = "Select * from HocSinh";
+        Cursor c = db.rawQuery(sql, null);
+
         ft = getSupportFragmentManager().beginTransaction();
-        fragment1 = com.example.week08.Fragment1.newInstance("first-blue");
+        fragment1 = com.example.week08.Fragment1.newInstance("first-blue", c);
         ft.replace(R.id.main_holder_1, fragment1);
         ft.commit();
 
         ft = getSupportFragmentManager().beginTransaction();
-        fragment2 = Fragment2.newInstance("first-red");
+        fragment2 = Fragment2.newInstance("first-red", c);
         ft.replace(R.id.main_holder_2, fragment2);
         ft.commit();
 

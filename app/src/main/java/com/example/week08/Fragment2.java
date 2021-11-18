@@ -1,6 +1,7 @@
 package com.example.week08;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,6 +15,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import java.util.ArrayList;
+
 
 public class Fragment2 extends Fragment implements FragmentCallbacks {
     Context context;
@@ -24,26 +27,31 @@ public class Fragment2 extends Fragment implements FragmentCallbacks {
     private Button btnPrevios;
     private Button btnNext;
     private Button btnLast;
-
-    private com.example.week08.Member members[] = {
-            new com.example.week08.Member("19120070", "Trần Nhật Hào", "19_3", 10),
-            new com.example.week08.Member("19120168", "Lê Viết Bách", "19_3", 10),
-            new com.example.week08.Member("19120141", "Nguyễn Quốc Toàn", "19_3", 10),
-            new com.example.week08.Member("19120722", "Văn Thế Vinh", "19_3", 10),
-            new com.example.week08.Member("19120129", "Huỳnh Minh Thắng", "19_3", 10)
-    };
+    private static Cursor cursor;
+    private ArrayList<Member> members;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         context = getActivity();
+
+        members = new ArrayList<Member>();
+        cursor.moveToPosition(-1);
+        while (cursor.moveToNext()) {
+            String mssv = cursor.getString(0);
+            String ten = cursor.getString(1);
+            String tenlop = cursor.getString(2);
+            int diem = cursor.getInt(3);
+            members.add(new Member(mssv, ten, tenlop, diem));
+        }
     }
 
-    public static Fragment2 newInstance(String strArg1) {
+    public static Fragment2 newInstance(String strArg1, Cursor c) {
         Fragment2 fragment = new Fragment2();
         Bundle bundle = new Bundle();
         bundle.putString("arg1", strArg1);
         fragment.setArguments(bundle);
+        cursor = c;
         return fragment;
     }
 
@@ -98,7 +106,7 @@ public class Fragment2 extends Fragment implements FragmentCallbacks {
             @Override
             public void onClick(View view) {
                 position++;
-                if (position == members.length - 1) {
+                if (position == members.size() - 1) {
                     setButtonEnable(true,true, false, false);
                 }
                 else {
@@ -110,7 +118,7 @@ public class Fragment2 extends Fragment implements FragmentCallbacks {
         btnLast.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                position = members.length - 1;
+                position = members.size() - 1;
                 setButtonEnable(true,true, false, false);
                 setData(position);
             }
@@ -122,7 +130,7 @@ public class Fragment2 extends Fragment implements FragmentCallbacks {
     public void onMsgFromMainToFragment(int value) {
         if (value == 0) {
             setButtonEnable(false, false, true, true);
-        } else if (value == members.length - 1) {
+        } else if (value == members.size() - 1) {
             setButtonEnable(true,true, false, false);
         }
         else {
@@ -157,10 +165,10 @@ public class Fragment2 extends Fragment implements FragmentCallbacks {
     }
 
     public void setData(int position) {
-        txtMSSV.setText(members[position].getId());
-        txtInfo.setText("Họ tên: " + members[position].getName() + "\n" +
-                "Lớp: " + members[position].getClassName() + "\n" +
-                "Điểm trung bình: " + members[position].getScore());
+        txtMSSV.setText(members.get(position).getId());
+        txtInfo.setText("Họ tên: " + members.get(position).getName() + "\n" +
+                "Lớp: " + members.get(position).getClassName() + "\n" +
+                "Điểm trung bình: " + members.get(position).getScore());
         ((com.example.week08.MainActivity) context).onMsgFromFragToMain("Fragment 2", position);
     }
 }

@@ -13,18 +13,16 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import java.util.ArrayList;
+
 public class CustomListViewAdapter extends ArrayAdapter<String> {
     private Context context;
-    private String[] mssv;
-    private int[] idImages;
+    private ArrayList<String> mssv;
 
-    public CustomListViewAdapter(@NonNull Context context, int layout, String[] mssv, int[] idImages) {
+    public CustomListViewAdapter(@NonNull Context context, int layout, ArrayList<String> mssv) {
         super(context, layout, mssv);
         this.context = context;
         this.mssv = mssv;
-        this.idImages = idImages;
-        Log.d(mssv.toString(),"");
-        Log.d("", idImages.toString());
     }
 
     @NonNull
@@ -34,8 +32,8 @@ public class CustomListViewAdapter extends ArrayAdapter<String> {
         View row = inflater.inflate(R.layout.list_item_layout, null);
         ImageView image = (ImageView) row.findViewById(R.id.avatar);
         TextView txtMaSo3 = (TextView) row.findViewById(R.id.txtMaSo3);
-        image.setImageResource(idImages[position]);
-        txtMaSo3.setText(mssv[position]);
+        image.setImageResource(R.drawable.ic_bach);
+        txtMaSo3.setText(mssv.get(position));
         return row;
     }
 }
