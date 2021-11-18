@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:textSize="15dp"
+        android:id="@+id/txtMaSo1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Mã số: \n"
+        android:padding="10dp"/>
+
+    <ListView
+        android:textSize="8dp"
+        android:id="@+id/listView"
+        android:padding="5dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+</LinearLayout>
